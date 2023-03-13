@@ -1,0 +1,6 @@
+name: huntersmark
+author: cfrankovich
+main: dev.frankovich.huntersmark.Plugin
+version: 0.0.1
+api-version: 1.19
+description: Bounty hunter plugin.
