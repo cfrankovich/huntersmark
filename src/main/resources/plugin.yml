@@ -1,6 +1,11 @@
 name: huntersmark
 author: cfrankovich
-main: dev.frankovich.huntersmark.Plugin
+main: dev.frankovich.Plugin
 version: 0.0.1
 api-version: 1.19
 description: Bounty hunter plugin.
+
+commands:
+  drop:
+    description: Test to drop a star
+    usage: /drop
