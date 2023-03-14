@@ -3,18 +3,25 @@ package dev.frankovich;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import dev.frankovich.commands.DropCommand;
 import dev.frankovich.handlers.PlayerHandler;
 
 public class Plugin extends JavaPlugin
 {
+    @Override
     public void onEnable()
     {
-        Bukkit.getLogger().info("[huntersmark] plugin enabled");
-
+        saveDefaultConfig();
+        new HeartData(this);
+        getCommand("drop").setExecutor(new DropCommand());
         Bukkit.getPluginManager().registerEvents(new PlayerHandler(), this);
+
+        Bukkit.getLogger().info("[huntersmark] plugin enabled");
     }
 
+    @Override
     public void onDisable()
     {
+        Bukkit.getLogger().info("[huntersmark] plugin disabled");
     }
 }
