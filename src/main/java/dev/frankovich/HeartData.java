@@ -34,7 +34,7 @@ public class HeartData
     {
         try
         {
-            FileWriter fWriter = new FileWriter(HEARTDATAPATH);
+            FileWriter fWriter = new FileWriter(HEARTDATAPATH, true);
             fWriter.append(str);
             fWriter.close();
         } catch (IOException e)
@@ -43,8 +43,34 @@ public class HeartData
         }
     }
 
+    private static boolean hasEntry(String UUID)
+    {
+        try
+        {
+            FileReader fReader = new FileReader(HEARTDATAPATH);
+            BufferedReader bReader = new BufferedReader(fReader);
+
+            String line;
+            while ((line = bReader.readLine()) != null) 
+            {
+                if (line.split(" ")[0].equals(UUID))
+                {
+                    return true;
+                }    
+            }
+            bReader.close();
+            fReader.close();
+        } catch (IOException e) 
+        {
+            Bukkit.getLogger().info("[huntersmark] Exception in HeartData#hasEntry()");
+        } 
+
+        return false;
+    }
+
     public static void createNewPlayerEntry(String UUID)
     {
+        if (hasEntry(UUID)) return;
         String defaultPlayerHearts = plugin.getConfig().getString("startinghearts");
         append(UUID + " " + defaultPlayerHearts + "\n");
     }
@@ -80,32 +106,49 @@ public class HeartData
     public static void updatePlayerEntry(String UUID, int heartsToAdd)
     {
         // TODO: ban player if this value is 0
-        String newHearts = Integer.toString(getPlayerHearts(UUID) + heartsToAdd); 
+        String newHearts;
+        if (heartsToAdd < 0)
+        {
+            newHearts = Integer.toString(getPlayerHearts(UUID) + heartsToAdd); 
+        }
+        else
+        {
+            newHearts = Integer.toString(heartsToAdd);
+        }
+        String builderString = "";
 
         try
         {
             FileReader fReader = new FileReader(HEARTDATAPATH);
             BufferedReader bReader = new BufferedReader(fReader);
-            FileWriter fWriter = new FileWriter(HEARTDATAPATH);
 
             String line;
             while ((line = bReader.readLine()) != null) 
             {
                 if (line.split(" ")[0].equals(UUID))
                 {
-                    fWriter.write(UUID + " " + newHearts + "\n");
+                    builderString += (UUID + " " + newHearts + "\n");
                 }    
                 else
                 {
-                    fWriter.write(line);
+                    builderString += line;
                 }
             }
             bReader.close();
             fReader.close();
+        } catch (IOException e)
+        {
+            Bukkit.getLogger().info("[huntersmark] Exception in HeartData#updatePlayerEntry() [1]");
+        }
+
+        try
+        {
+            FileWriter fWriter = new FileWriter(HEARTDATAPATH);
+            fWriter.write(builderString);
             fWriter.close();
         } catch (IOException e)
         {
-            Bukkit.getLogger().info("[huntersmark] Exception in HeartData#updatePlayerEntry()");
+            Bukkit.getLogger().info("[huntersmark] Exception in HeartData#updatePlayerEntry() [2]");
         }
     }
 }
