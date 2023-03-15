@@ -13,6 +13,8 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 
+import dev.frankovich.handlers.ScoreboardHandler;
+
 public class HeartData 
 {
     private static final String HEART_DATA_PATH = "./plugins/huntersmark/playerdata.txt";
@@ -189,5 +191,11 @@ public class HeartData
         }
 
         updateGameHealth(Bukkit.getPlayer(id));
+
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers())
+        {
+            ScoreboardHandler.presentScoreboard(onlinePlayer);
+        }
+
     }
 }

@@ -6,6 +6,7 @@ import org.bukkit.entity.Entity;
 public class HMUtils 
 {
     public static final char CHAT_COLOR_SYMBOL = '§';
+    public static final char CHAT_HEART_SYMBOL = '❤';
 
     public static void log(String s) { Bukkit.getLogger().info("[huntersmark] " + s); }
 
