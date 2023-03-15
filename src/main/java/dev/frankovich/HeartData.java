@@ -5,6 +5,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.BanList.Type;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.entity.Player;
 
 public class HeartData 
 {
@@ -26,6 +33,29 @@ public class HeartData
         {
             HMUtils.log("Exception in HeartData#HeartData()");
         }
+    }
+
+    public static void addToBanList(UUID id)
+    {
+        String playerName = Bukkit.getPlayer(id).getName(); 
+        Bukkit.getBanList(Type.NAME).addBan(playerName, "No more hearts", null, "Huntersmark");
+        Bukkit.getPlayer(id).kickPlayer("You have ran out of hearts! Players can still summon you in using other player's hearts.");
+
+        try
+        {
+            FileWriter fWriter = new FileWriter(NO_HEARTS_BAN_PATH, true);
+            fWriter.append(id.toString());
+            fWriter.close();
+        } catch (IOException e)
+        {
+            HMUtils.log("Exception in HeartData#appendToHeart()");
+        }
+    }
+
+    public static void updateGameHealth(Player p)
+    {
+        AttributeInstance attribute = p.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        attribute.setBaseValue(HeartData.getPlayerHearts(p.getUniqueId().toString()) * 2);
     }
 
     public static void append(String str)
@@ -103,11 +133,11 @@ public class HeartData
         return -1;
     } 
 
-    public static void updatePlayerEntry(String UUID, int heartsToAdd)
+    public static void updatePlayerEntry(UUID id, int heartsToAdd)
     {
-        // TODO: ban player if this value is 0
+        String UUID = id.toString();
         String newHearts;
-        if (heartsToAdd < 0)
+        if (heartsToAdd <= 1)
         {
             newHearts = Integer.toString(getPlayerHearts(UUID) + heartsToAdd); 
         }
@@ -115,6 +145,13 @@ public class HeartData
         {
             newHearts = Integer.toString(heartsToAdd);
         }
+
+        if (newHearts.equals("0"))
+        {
+            addToBanList(id);
+            return;
+        }
+
         String builderString = "";
 
         try
@@ -150,5 +187,7 @@ public class HeartData
         {
             HMUtils.log("Exception in HeartData#updatePlayerEntry() [2]");
         }
+
+        updateGameHealth(Bukkit.getPlayer(id));
     }
 }

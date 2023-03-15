@@ -1,5 +1,7 @@
 package dev.frankovich.commands;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -32,8 +34,9 @@ public class HeartsCommand implements CommandExecutor
             return false;
         }
 
-        String UUID = Bukkit.getPlayer(name).getUniqueId().toString();
-        HeartData.updatePlayerEntry(UUID, Integer.parseInt(heartValue));
+        UUID id = Bukkit.getPlayer(name).getUniqueId();
+        HeartData.updatePlayerEntry(id, Integer.parseInt(heartValue));
+        HeartData.updateGameHealth(Bukkit.getPlayer(name));
 
         HMUtils.chat((Entity) sender, "Successfully updated &l" + name + "&r's hearts to " + heartValue + ".");
         

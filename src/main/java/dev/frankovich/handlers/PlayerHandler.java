@@ -3,25 +3,49 @@ package dev.frankovich.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import dev.frankovich.HMUtils;
 import dev.frankovich.HeartData;
 
 public class PlayerHandler implements Listener 
 {
+    @EventHandler
+    public void onRightClickHeart(PlayerInteractEvent e)
+    {
+        if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+
+        if (e.getHand() != EquipmentSlot.HAND) return;
+
+        ItemMeta playerItemMeta = e.getItem().getItemMeta();
+        List<String> itemMetaLore = playerItemMeta.getLore();
+        final String loreMatch = "The heart of your enemies holds great power...";
+        
+        if (!itemMetaLore.get(0).equals(loreMatch)) return;
+
+        // *sips tea ahhh java code 
+        HeartData.updatePlayerEntry(e.getPlayer().getUniqueId(), 1);
+
+        Location spawnLocation = e.getPlayer().getLocation();
+        spawnLocation.setY(spawnLocation.getY() + 1);
+        e.getPlayer().spawnParticle(Particle.ELECTRIC_SPARK, spawnLocation, 25);
+        HeartData.updateGameHealth(e.getPlayer());
+    }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e)
     {
@@ -40,10 +64,10 @@ public class PlayerHandler implements Listener
         if (killer == null) return;
 
         /* update the deceased player to one less heart */
-        HeartData.updatePlayerEntry(deceasedPlayer.getUniqueId().toString(), -1);
+        HeartData.updatePlayerEntry(deceasedPlayer.getUniqueId(), -1);
 
         /* drop a heart for the killer */
-        HMUtils.chat((Entity)killer, "You have collected the heart of &l" + deceasedPlayer.getName() + "&r.");
+        killer.sendMessage("&7You have collected the heart of &o" + deceasedPlayer.getName() + "&r&7.");
 
         ItemStack item = new ItemStack(Material.NETHER_STAR);
         ItemMeta itemMeta = item.getItemMeta(); 

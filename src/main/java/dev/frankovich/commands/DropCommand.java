@@ -3,6 +3,7 @@ package dev.frankovich.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -32,7 +33,7 @@ public class DropCommand implements CommandExecutor
         ItemMeta itemMeta = item.getItemMeta(); 
         itemMeta.setDisplayName("Someone's Heart");
         List<String> itemLore = new ArrayList<String>();
-        itemLore.add("Right click to gain a heart.");
+        itemLore.add("The heart of your enemies holds great power...");
         itemMeta.setLore(itemLore);
         item.setItemMeta(itemMeta);
 
@@ -40,7 +41,7 @@ public class DropCommand implements CommandExecutor
         dropLocation.setY(dropLocation.getY() + 1.0); 
         world.dropItem(dropLocation, item);
         player.spawnParticle(Particle.ELECTRIC_SPARK, dropLocation, 20);
-        
+
         return false;
     }
     
