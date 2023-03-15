@@ -3,6 +3,7 @@ package dev.frankovich.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -64,15 +65,17 @@ public class PlayerHandler implements Listener
         final Player killer = deceasedPlayer.getKiller(); 
         if (killer == null) return;
 
+        Bukkit.broadcastMessage("running da method");
+
         /* update the deceased player to one less heart */
         HeartData.updatePlayerEntry(deceasedPlayer.getUniqueId(), -1);
 
         /* drop a heart for the killer */
-        killer.sendMessage("&7You have collected the heart of &o" + deceasedPlayer.getName() + "&r&7.");
+        killer.sendMessage("§7You have collected the heart of §o" + deceasedPlayer.getName() + "§r§7.");
 
         ItemStack item = new ItemStack(Material.NETHER_STAR);
         ItemMeta itemMeta = item.getItemMeta(); 
-        itemMeta.setDisplayName("&l" + deceasedPlayer.getName() + "&r's Heart");
+        itemMeta.setDisplayName("§l" + deceasedPlayer.getName() + "§r's Heart");
         List<String> itemLore = new ArrayList<String>();
         itemLore.add("The heart of your enemies holds great power...");
         itemMeta.setLore(itemLore);

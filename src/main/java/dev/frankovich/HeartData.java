@@ -65,7 +65,7 @@ public class HeartData
         try
         {
             FileWriter fWriter = new FileWriter(HEART_DATA_PATH, true);
-            fWriter.append(str);
+            fWriter.append(str + "\n");
             fWriter.close();
         } catch (IOException e)
         {
@@ -104,7 +104,7 @@ public class HeartData
     {
         if (hasEntry(UUID)) return;
         String defaultPlayerHearts = plugin.getConfig().getString("startinghearts");
-        append(UUID + " " + defaultPlayerHearts + "\n");
+        append(UUID + " " + defaultPlayerHearts);
     }
 
     public static int getPlayerHearts(String UUID)
@@ -170,7 +170,7 @@ public class HeartData
                 }    
                 else
                 {
-                    builderString += line;
+                    builderString += line + "\n";
                 }
             }
             bReader.close();
@@ -191,11 +191,6 @@ public class HeartData
         }
 
         updateGameHealth(Bukkit.getPlayer(id));
-
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers())
-        {
-            ScoreboardHandler.presentScoreboard(onlinePlayer);
-        }
-
+        ScoreboardHandler.presentScoreboard();
     }
 }

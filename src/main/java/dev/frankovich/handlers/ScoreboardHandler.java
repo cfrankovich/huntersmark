@@ -28,10 +28,10 @@ public class ScoreboardHandler implements Listener
     public void onPlayerJoin(PlayerJoinEvent e)
     {
         Player player = e.getPlayer(); 
-        presentScoreboard(player);
+        presentScoreboard();
     }
 
-    public static void presentScoreboard(Player p)
+    public static void presentScoreboard()
     {
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         Scoreboard scoreboard = manager.getNewScoreboard();
@@ -65,6 +65,9 @@ public class ScoreboardHandler implements Listener
             size--;
         }
 
-        p.setScoreboard(scoreboard);
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers())
+        {
+            onlinePlayer.setScoreboard(scoreboard);
+        }
     }
 }
