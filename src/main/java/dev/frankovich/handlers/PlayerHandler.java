@@ -32,12 +32,12 @@ public class PlayerHandler implements Listener
         if (e.getHand() != EquipmentSlot.HAND) return;
 
         ItemMeta playerItemMeta = e.getItem().getItemMeta();
-        List<String> itemMetaLore = playerItemMeta.getLore();
+        if (playerItemMeta == null) return;
 
+        List<String> itemMetaLore = playerItemMeta.getLore();
         if (itemMetaLore == null) return;
 
         final String loreMatch = "The heart of your enemies holds great power...";
-        
         if (!itemMetaLore.get(0).equals(loreMatch)) return;
 
         // *sips tea ahhh java code 
