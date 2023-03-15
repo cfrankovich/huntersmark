@@ -43,6 +43,8 @@ public class PlayerHandler implements Listener
         spawnLocation.setY(spawnLocation.getY() + 1);
         e.getPlayer().spawnParticle(Particle.ELECTRIC_SPARK, spawnLocation, 25);
         HeartData.updateGameHealth(e.getPlayer());
+
+        e.getPlayer().getInventory().remove(e.getItem());
     }
 
     @EventHandler
