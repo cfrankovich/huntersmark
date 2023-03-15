@@ -9,6 +9,8 @@ commands:
   drop:
     description: Test to drop a star
     usage: /drop
+    permission: huntersmark.drop
   updatehearts:
     description: Testing command to update hearts
     usage: /updatehearts <name> <hearts>
+    permission: huntersmark.updatehearts

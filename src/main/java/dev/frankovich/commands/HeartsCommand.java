@@ -23,6 +23,13 @@ public class HeartsCommand implements CommandExecutor
             return false;
         }
 
+        Player player = (Player) sender;
+        if (!player.hasPermission("huntersmark.updatehearts")) 
+        {
+            HMUtils.chat((Entity)player, "Sorry, you do not have permission to execute this command.");
+            return false;  
+        }
+
         String name, heartValue;
         try
         {
