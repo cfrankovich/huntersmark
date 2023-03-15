@@ -18,12 +18,12 @@ public class Plugin extends JavaPlugin
         getCommand("updatehearts").setExecutor(new HeartsCommand());
         Bukkit.getPluginManager().registerEvents(new PlayerHandler(), this);
 
-        Bukkit.getLogger().info("[huntersmark] plugin enabled");
+        HMUtils.log("plugin enabled");
     }
 
     @Override
     public void onDisable()
     {
-        Bukkit.getLogger().info("[huntersmark] plugin disabled");
+        HMUtils.log("plugin disabled");
     }
 }

@@ -6,12 +6,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.bukkit.Bukkit;
-
 public class HeartData 
 {
-    private static final String HEARTDATAPATH = "./plugins/huntersmark/playerdata.txt";
-    private static final String NOHEARTSBANPATH = "./plugins/huntersmark/playerheartbans.txt";
+    private static final String HEART_DATA_PATH = "./plugins/huntersmark/playerdata.txt";
+    private static final String NO_HEARTS_BAN_PATH = "./plugins/huntersmark/playerheartbans.txt";
     private static Plugin plugin;
 
     public HeartData(Plugin plugin)
@@ -20,13 +18,13 @@ public class HeartData
 
         try
         {
-            File heartDataFile = new File(HEARTDATAPATH);
-            File banFile = new File(NOHEARTSBANPATH);
+            File heartDataFile = new File(HEART_DATA_PATH);
+            File banFile = new File(NO_HEARTS_BAN_PATH);
             heartDataFile.createNewFile();
             banFile.createNewFile();
         } catch (IOException e)
         {
-            Bukkit.getLogger().info("[huntersmark] Exception in HeartData#HeartData()");
+            HMUtils.log("Exception in HeartData#HeartData()");
         }
     }
 
@@ -34,12 +32,12 @@ public class HeartData
     {
         try
         {
-            FileWriter fWriter = new FileWriter(HEARTDATAPATH, true);
+            FileWriter fWriter = new FileWriter(HEART_DATA_PATH, true);
             fWriter.append(str);
             fWriter.close();
         } catch (IOException e)
         {
-            Bukkit.getLogger().info("[huntersmark] Exception in HeartData#appendToHeart()");
+            HMUtils.log("Exception in HeartData#appendToHeart()");
         }
     }
 
@@ -47,7 +45,7 @@ public class HeartData
     {
         try
         {
-            FileReader fReader = new FileReader(HEARTDATAPATH);
+            FileReader fReader = new FileReader(HEART_DATA_PATH);
             BufferedReader bReader = new BufferedReader(fReader);
 
             String line;
@@ -55,6 +53,8 @@ public class HeartData
             {
                 if (line.split(" ")[0].equals(UUID))
                 {
+                    bReader.close();
+                    fReader.close();
                     return true;
                 }    
             }
@@ -62,7 +62,7 @@ public class HeartData
             fReader.close();
         } catch (IOException e) 
         {
-            Bukkit.getLogger().info("[huntersmark] Exception in HeartData#hasEntry()");
+            HMUtils.log("Exception in HeartData#hasEntry()");
         } 
 
         return false;
@@ -79,7 +79,7 @@ public class HeartData
     {
         try
         {
-            FileReader fReader = new FileReader(HEARTDATAPATH);
+            FileReader fReader = new FileReader(HEART_DATA_PATH);
             BufferedReader bReader = new BufferedReader(fReader);
 
             String line;
@@ -96,10 +96,10 @@ public class HeartData
             fReader.close();
         } catch (IOException e) 
         {
-            Bukkit.getLogger().info("[huntersmark] Exception in HeartData#getPlayerHearts()");
+            HMUtils.log("Exception in HeartData#getPlayerHearts()");
         }
 
-        Bukkit.getLogger().info("[huntersmark] UUID " + UUID + " was not found in the heart data file @ HeartData#getPlayerHearts()");
+        HMUtils.log("UUID " + UUID + " was not found in the heart data file @ HeartData#getPlayerHearts()");
         return -1;
     } 
 
@@ -119,7 +119,7 @@ public class HeartData
 
         try
         {
-            FileReader fReader = new FileReader(HEARTDATAPATH);
+            FileReader fReader = new FileReader(HEART_DATA_PATH);
             BufferedReader bReader = new BufferedReader(fReader);
 
             String line;
@@ -138,17 +138,17 @@ public class HeartData
             fReader.close();
         } catch (IOException e)
         {
-            Bukkit.getLogger().info("[huntersmark] Exception in HeartData#updatePlayerEntry() [1]");
+            HMUtils.log("Exception in HeartData#updatePlayerEntry() [1]");
         }
 
         try
         {
-            FileWriter fWriter = new FileWriter(HEARTDATAPATH);
+            FileWriter fWriter = new FileWriter(HEART_DATA_PATH);
             fWriter.write(builderString);
             fWriter.close();
         } catch (IOException e)
         {
-            Bukkit.getLogger().info("[huntersmark] Exception in HeartData#updatePlayerEntry() [2]");
+            HMUtils.log("Exception in HeartData#updatePlayerEntry() [2]");
         }
     }
 }

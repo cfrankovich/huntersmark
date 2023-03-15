@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -16,6 +17,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import dev.frankovich.HMUtils;
 import dev.frankovich.HeartData;
 
 public class PlayerHandler implements Listener 
@@ -41,13 +43,13 @@ public class PlayerHandler implements Listener
         HeartData.updatePlayerEntry(deceasedPlayer.getUniqueId().toString(), -1);
 
         /* drop a heart for the killer */
-        killer.sendMessage("You have collected the heart of " + deceasedPlayer.getName());
+        HMUtils.chat((Entity)killer, "You have collected the heart of &l" + deceasedPlayer.getName() + "&r.");
 
         ItemStack item = new ItemStack(Material.NETHER_STAR);
         ItemMeta itemMeta = item.getItemMeta(); 
-        itemMeta.setDisplayName(deceasedPlayer.getName() + "'s Heart");
+        itemMeta.setDisplayName("&l" + deceasedPlayer.getName() + "&r's Heart");
         List<String> itemLore = new ArrayList<String>();
-        itemLore.add("Right click to gain a heart.");
+        itemLore.add("The heart of your enemies holds great power...");
         itemMeta.setLore(itemLore);
         item.setItemMeta(itemMeta);
 
