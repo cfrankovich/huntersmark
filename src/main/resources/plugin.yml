@@ -9,3 +9,6 @@ commands:
   drop:
     description: Test to drop a star
     usage: /drop
+  updatehearts:
+    description: Testing command to update hearts
+    usage: /updatehearts <name> <hearts>
