@@ -33,6 +33,9 @@ public class PlayerHandler implements Listener
 
         ItemMeta playerItemMeta = e.getItem().getItemMeta();
         List<String> itemMetaLore = playerItemMeta.getLore();
+
+        if (itemMetaLore == null) return;
+
         final String loreMatch = "The heart of your enemies holds great power...";
         
         if (!itemMetaLore.get(0).equals(loreMatch)) return;
