@@ -31,7 +31,10 @@ public class PlayerHandler implements Listener
 
         if (e.getHand() != EquipmentSlot.HAND) return;
 
-        ItemMeta playerItemMeta = e.getItem().getItemMeta();
+        ItemStack playerItem = e.getItem();
+        if (playerItem == null) return;
+
+        ItemMeta playerItemMeta = playerItem.getItemMeta();
         if (playerItemMeta == null) return;
 
         List<String> itemMetaLore = playerItemMeta.getLore();
